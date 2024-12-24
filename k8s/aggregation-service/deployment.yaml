@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aggregation-service-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aggregation-service
+  template:
+    metadata:
+      labels:
+        app: aggregation-service
+    spec:
+      containers:
+      - name: aggregation-service
+        image: localhost:5000/aggregation-service:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8082
+        volumeMounts:
+        - name: config-volume
+          mountPath: /config  # Montira ConfigMap na ovu lokaciju
+      volumes:
+      - name: config-volume
+        configMap:
+          name: aggregation-config  # Naziv ConfigMap-a
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0

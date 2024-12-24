@@ -1,0 +1,15 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: aggregation-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /api/aggregate
+        pathType: Prefix
+        backend:
+          service:
+            name: aggregation-service
+            port:
+              number: 8082 

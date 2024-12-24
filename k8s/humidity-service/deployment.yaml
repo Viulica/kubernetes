@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: humidity-service-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: humidity-service
+  template:
+    metadata:
+      labels:
+        app: humidity-service
+    spec:
+      containers:
+      - name: humidity-service
+        image: localhost:5000/humidity-service
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8081
+        volumeMounts:  # Montiranje ConfigMap-a u kontejner
+        - name: config-volume
+          mountPath: /config  # ConfigMap će biti montiran kao datoteka unutar ovog direktorija
+      volumes:  # Definiranje volumena koji koristi ConfigMap
+      - name: config-volume
+        configMap:
+          name: humidity-config  # Naziv ConfigMap-a (mora odgovarati ovom nazivu)

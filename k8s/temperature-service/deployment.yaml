@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: temperature-service-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: temperature-service
+  template:
+    metadata:
+      labels:
+        app: temperature-service
+    spec:
+      containers:
+      - name: temperature-service
+        image: localhost:5000/temperature-service
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+        volumeMounts:  # Dodajemo montiranje ConfigMap-a u kontejner
+        - name: config-volume
+          mountPath: /config  # ConfigMap se montira u /config direktorij
+      volumes:  # Ovdje definiramo volume koji se odnosi na ConfigMap
+      - name: config-volume
+        configMap:
+          name: temperature-config  # Naziv ConfigMap-a (mora se podudarati)
