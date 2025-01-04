@@ -18,7 +18,6 @@ public class TemperatureReading {
         this.temperature = temperature;
     }
     
-    // Getters and setters
     public Long getId() {
         return id;
     }

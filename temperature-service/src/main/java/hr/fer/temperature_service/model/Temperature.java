@@ -14,7 +14,6 @@ public class Temperature {
         this.value = value;
     }
 
-    // Getters and setters
     public String getName() {
         return name;
     }

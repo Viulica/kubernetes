@@ -18,10 +18,10 @@ spec:
         imagePullPolicy: Never
         ports:
         - containerPort: 8081
-        volumeMounts:  # Montiranje ConfigMap-a u kontejner
+        volumeMounts:  
         - name: config-volume
-          mountPath: /config  # ConfigMap će biti montiran kao datoteka unutar ovog direktorija
-      volumes:  # Definiranje volumena koji koristi ConfigMap
+          mountPath: /config 
+      volumes:  
       - name: config-volume
         configMap:
-          name: humidity-config  # Naziv ConfigMap-a (mora odgovarati ovom nazivu)
+          name: humidity-config  

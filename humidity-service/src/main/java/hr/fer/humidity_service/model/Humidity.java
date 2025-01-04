@@ -14,7 +14,6 @@ public class Humidity {
         this.value = value;
     }
 
-    // Getters and setters
     public String getName() {
         return name;
     }

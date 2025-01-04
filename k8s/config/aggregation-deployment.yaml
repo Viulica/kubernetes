@@ -20,11 +20,11 @@ spec:
         - containerPort: 8082
         volumeMounts:
         - name: config-volume
-          mountPath: /config  # Montira ConfigMap na ovu lokaciju
+          mountPath: /config  
       volumes:
       - name: config-volume
         configMap:
-          name: aggregation-config  # Naziv ConfigMap-a
+          name: aggregation-config 
   strategy:
     type: RollingUpdate
     rollingUpdate:
