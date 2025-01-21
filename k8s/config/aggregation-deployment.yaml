@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
       - name: aggregation-service
-        image: localhost:5000/aggregation-service:latest
-        imagePullPolicy: Always
+        image: localhost:5000/aggregation-service
+        imagePullPolicy: Never
         ports:
         - containerPort: 8082
         volumeMounts:
@@ -24,7 +24,7 @@ spec:
       volumes:
       - name: config-volume
         configMap:
-          name: aggregation-config 
+          name: aggregation-config
   strategy:
     type: RollingUpdate
     rollingUpdate:

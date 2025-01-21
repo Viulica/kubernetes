@@ -1,0 +1,45 @@
+# Pokretanje Docker Registry
+docker run -d -p 5000:5000 --name registry registry:2
+
+# Temperature Service
+cd ../temperature-service
+./gradlew bootBuildImage --imageName=temperature-service
+docker tag temperature-service localhost:5000/temperature-service
+docker push localhost:5000/temperature-service
+cd ../k8s
+kubectl apply -f config/temperature-configmap.yaml
+kubectl apply -f config/temperature-service.yaml
+kubectl apply -f config/temperature-deployment.yaml
+
+# Humidity Service
+cd ../humidity-service
+./gradlew bootBuildImage --imageName=humidity-service
+docker tag humidity-service localhost:5000/humidity-service
+docker push localhost:5000/humidity-service
+cd ../k8s
+kubectl apply -f config/humidity-configmap.yaml
+kubectl apply -f config/humidity-service.yaml
+kubectl apply -f config/humidity-deployment.yaml
+
+# Aggregation Service
+cd ../aggregation-service
+./gradlew bootBuildImage --imageName=aggregation-service
+docker tag aggregation-service localhost:5000/aggregation-service
+docker push localhost:5000/aggregation-service
+cd ../k8s
+kubectl apply -f config/aggregation-configmap.yaml
+kubectl apply -f config/aggregation-service.yaml
+kubectl apply -f config/aggregation-deployment.yaml
+kubectl apply -f config/aggregation-gateway.yaml
+
+# Port forwarding za testiranje
+kubectl port-forward deployment/aggregation-service-deployment 8082:8082
+
+# Primjer GET zahtjeva za dohvaćanje očitanja s mikroservisa za agregaciju
+curl http://localhost:8082/api/aggregate 
+
+# Promjena K u C 
+kubectl apply -f k8s/config/aggregation-configmap.yaml
+kubectl rollout restart deployment aggregation-service-deployment
+kubectl port-forward service/aggregation-service 8082:8082
+curl http://localhost:8082/api/aggregate

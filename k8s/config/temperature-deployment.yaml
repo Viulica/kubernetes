@@ -18,10 +18,15 @@ spec:
         imagePullPolicy: Never
         ports:
         - containerPort: 8080
-        volumeMounts: 
+        volumeMounts:
         - name: config-volume
-          mountPath: /config  
-      volumes:  
+          mountPath: /config
+        - name: readings-volume
+          mountPath: /data
+      volumes:
       - name: config-volume
         configMap:
-          name: temperature-config  
+          name: temperature-config
+      - name: readings-volume
+        configMap:
+          name: temperature-readings-config

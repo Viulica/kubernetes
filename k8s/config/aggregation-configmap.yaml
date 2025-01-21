@@ -6,6 +6,6 @@ data:
   application.properties: |
     spring.application.name=aggregation-service
     server.port=8082
-    temperature.unit=K
+    temperature.unit=C
     service.temperature.url=http://temperature-service:8080/api/temperature
     service.humidity.url=http://humidity-service:8081/api/humidity

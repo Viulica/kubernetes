@@ -4,11 +4,11 @@ import hr.fer.temperature_service.model.Temperature;
 import hr.fer.temperature_service.model.TemperatureReading;
 import hr.fer.temperature_service.repository.TemperatureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.File;
+import java.io.FileReader;
 import java.time.Instant;
 
 @Service
@@ -16,6 +16,8 @@ public class TemperatureService {
     
     @Autowired
     private TemperatureRepository repository;
+    
+    private static final String CSV_PATH = "/data/readings.csv";
     
     public Temperature getCurrentTemperature() {
         int row = calculateCurrentRow();
@@ -32,8 +34,8 @@ public class TemperatureService {
     
     private double getValueFromCsv(int row) {
         try {
-            ClassPathResource resource = new ClassPathResource("readings.csv");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
+            File csvFile = new File(CSV_PATH);
+            BufferedReader reader = new BufferedReader(new FileReader(csvFile));
             
             String line;
             int currentRow = 0;
@@ -41,7 +43,7 @@ public class TemperatureService {
                 currentRow++;
                 if (currentRow == row) {
                     String[] values = line.split(",");
-                    return Double.parseDouble(values[0]); // Temperature je u prvom stupcu (index 0)
+                    return Double.parseDouble(values[0]);
                 }
             }
             reader.close();
